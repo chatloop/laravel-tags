@@ -10,7 +10,7 @@ it('can create a tag', function () {
     $tag = Tag::findOrCreateFromString('string');
 
     expect(Tag::all())->toHaveCount(1);
-    expect($tag->getTranslation('name', app()->getLocale()))->toBe('string');
+    expect($tag->name)->toBe('string');
     expect($tag->type)->toBeNull();
 });
 
@@ -120,22 +120,6 @@ it('can create tags using a collection', function () {
     Tag::findOrCreate(collect(['tag1', 'tag2', 'tag3']));
 
     expect(Tag::all())->toHaveCount(3);
-});
-
-
-it('can store translations', function () {
-    $tag = Tag::findOrCreate('my tag');
-
-    $tag->setTranslation('name', 'fr', 'mon tag');
-    $tag->setTranslation('name', 'nl', 'mijn tag');
-
-    $tag->save();
-
-    expect($tag->getTranslations('name'))->toMatchArray([
-        'en' => 'my tag',
-        'fr' => 'mon tag',
-        'nl' => 'mijn tag',
-    ]);
 });
 
 

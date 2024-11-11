@@ -62,19 +62,6 @@ trait HasTags
             ->ordered();
     }
 
-    public function tagsTranslated(string | null $locale = null): MorphToMany
-    {
-        $locale = ! is_null($locale) ? $locale : self::getTagClassName()::getLocale();
-
-        return $this
-            ->morphToMany(self::getTagClassName(), $this->getTaggableMorphName(), $this->getTaggableTableName())
-            ->using($this->getPivotModelClassName())
-            ->select('*')
-            ->selectRaw($this->getQuery()->getGrammar()->wrap("name->{$locale} as name_translated"))
-            ->selectRaw($this->getQuery()->getGrammar()->wrap("slug->{$locale} as slug_translated"))
-            ->ordered();
-    }
-
     public function setTagsAttribute(string | array | ArrayAccess | Tag $tags)
     {
         if (! $this->exists) {
@@ -222,13 +209,13 @@ trait HasTags
         return $this;
     }
 
-    protected static function convertToTags($values, $type = null, $locale = null)
+    protected static function convertToTags($values, $type = null)
     {
         if ($values instanceof Tag) {
             $values = [$values];
         }
 
-        return collect($values)->map(function ($value) use ($type, $locale) {
+        return collect($values)->map(function ($value) use ($type) {
             if ($value instanceof Tag) {
                 if (isset($type) && $value->type != $type) {
                     throw new InvalidArgumentException("Type was set to {$type} but tag is of type {$value->type}");
@@ -239,20 +226,20 @@ trait HasTags
 
             $className = static::getTagClassName();
 
-            return $className::findFromString($value, $type, $locale);
+            return $className::findFromString($value, $type);
         });
     }
 
-    protected static function convertToTagsOfAnyType($values, $locale = null)
+    protected static function convertToTagsOfAnyType($values)
     {
-        return collect($values)->map(function ($value) use ($locale) {
+        return collect($values)->map(function ($value) {
             if ($value instanceof Tag) {
                 return $value;
             }
 
             $className = static::getTagClassName();
 
-            return $className::findFromStringOfAnyType($value, $locale);
+            return $className::findFromStringOfAnyType($value);
         })->flatten();
     }
 
