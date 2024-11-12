@@ -2,6 +2,13 @@
 
 All notable changes to `laravel-tags` will be documented in this file
 
+## 5.0.0 - 2024-11-12
+
+### What's Changed
+* chore!: Dropped support for translation via JSON fields
+
+BREAKING CHANGE: removes all functionality relating to translation / locale support
+
 ## 4.7.0 - 2024-10-03
 
 ### What's Changed
