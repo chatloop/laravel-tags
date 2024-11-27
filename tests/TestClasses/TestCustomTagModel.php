@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\Tags\Test\TestClasses;
+namespace Chatloop\Tags\Test\TestClasses;
 
-use Spatie\Tags\Tag;
+use Chatloop\Tags\Tag;
 
 class TestCustomTagModel extends Tag
 {

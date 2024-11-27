@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Tags;
+namespace Chatloop\Tags;
 
 use ArrayAccess;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,13 +19,15 @@ class Tag extends Model implements Sortable
 
     public $guarded = [];
 
-    public function scopeWithType(Builder $query, string $type = null): Builder
+    public function scopeWithType(Builder $query, string $type = null, string $subtype = null): Builder
     {
         if (is_null($type)) {
             return $query;
         }
 
-        return $query->where('type', $type)->ordered();
+        return $query->where('type', $type)
+            ->where('subtype', $subtype)
+            ->ordered();
     }
 
     public function scopeContaining(Builder $query, string $name): Builder
@@ -36,27 +38,29 @@ class Tag extends Model implements Sortable
     public static function findOrCreate(
         string | array | ArrayAccess $values,
         string | null $type = null,
+        string | null $subtype = null
     ): Collection | Tag | static {
-        $tags = collect($values)->map(function ($value) use ($type) {
+        $tags = collect($values)->map(function ($value) use ($type, $subtype) {
             if ($value instanceof self) {
                 return $value;
             }
 
-            return static::findOrCreateFromString($value, $type);
+            return static::findOrCreateFromString($value, $type, $subtype);
         });
 
         return is_string($values) ? $tags->first() : $tags;
     }
 
-    public static function getWithType(string $type): DbCollection
+    public static function getWithType(string $type, string $subtype = null): DbCollection
     {
-        return static::withType($type)->get();
+        return static::withType($type, $subtype)->get();
     }
 
-    public static function findFromString(string $name, string $type = null)
+    public static function findFromString(string $name, string $type = null, string $subtype = null)
     {
         return static::query()
             ->where('type', $type)
+            ->where('subtype', $subtype)
             ->where(function ($query) use ($name) {
                 $query->where('name', $name)->orWhere('slug', $name);
             })
@@ -71,14 +75,15 @@ class Tag extends Model implements Sortable
             ->get();
     }
 
-    public static function findOrCreateFromString(string $name, string $type = null)
+    public static function findOrCreateFromString(string $name, string $type = null, string $subtype = null)
     {
-        $tag = static::findFromString($name, $type);
+        $tag = static::findFromString($name, $type, $subtype);
 
         if (! $tag) {
             $tag = static::create([
                 'name' => $name,
                 'type' => $type,
+                'subtype' => $subtype,
             ]);
         }
 

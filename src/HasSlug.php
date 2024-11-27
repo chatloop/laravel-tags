@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Tags;
+namespace Chatloop\Tags;
 
 use Illuminate\Database\Eloquent\Model;
 

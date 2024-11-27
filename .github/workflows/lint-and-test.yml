@@ -1,0 +1,28 @@
+name: 'Lint and Test'
+on:
+  pull_request:
+    paths-ignore:
+      - .release-please-manifest.json
+      - CHANGELOG.md
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version-file: .php-version
+          coverage: none
+      - name: Install PHP Dependencies
+        uses: ramsey/composer-install@v3
+      - name: Run PHP CS Fixer Check
+        run: vendor/bin/php-cs-fixer --config=.php-cs-fixer.dist.php check
+      - name: Run Tests
+        run: composer run test

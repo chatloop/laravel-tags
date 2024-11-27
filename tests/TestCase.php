@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\Tags\Test;
+namespace Chatloop\Tags\Test;
 
+use Chatloop\Tags\TagsServiceProvider;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Spatie\Tags\TagsServiceProvider;
 
 abstract class TestCase extends Orchestra
 {

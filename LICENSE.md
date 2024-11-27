@@ -1,5 +1,6 @@
 # The MIT License (MIT)
 
+Copyright (c) Chatloop Ltd <support@chatloop.com>
 Copyright (c) Spatie bvba <info@spatie.be>
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy

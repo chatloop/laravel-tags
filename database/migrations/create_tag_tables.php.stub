@@ -14,8 +14,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->string('type')->nullable();
+            $table->string('subtype')->nullable();
             $table->integer('order_column')->nullable();
-
+            $table->index(['type', 'subtype', 'order_column']);
             $table->timestamps();
         });
 
