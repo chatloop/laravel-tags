@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Tags;
+namespace Chatloop\Tags;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;

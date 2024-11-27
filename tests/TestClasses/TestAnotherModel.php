@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\Tags\Test\TestClasses;
+namespace Chatloop\Tags\Test\TestClasses;
 
+use Chatloop\Tags\HasTags;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Tags\HasTags;
 
 class TestAnotherModel extends Model
 {

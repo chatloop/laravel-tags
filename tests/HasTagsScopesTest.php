@@ -1,7 +1,7 @@
 <?php
 
-use Spatie\Tags\Tag;
-use Spatie\Tags\Test\TestClasses\TestModel;
+use Chatloop\Tags\Tag;
+use Chatloop\Tags\Test\TestClasses\TestModel;
 
 beforeEach(function () {
     TestModel::create([

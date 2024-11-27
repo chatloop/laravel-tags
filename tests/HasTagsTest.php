@@ -1,9 +1,9 @@
 <?php
 
+use Chatloop\Tags\Tag;
+use Chatloop\Tags\Test\TestClasses\TestAnotherModel;
+use Chatloop\Tags\Test\TestClasses\TestModel;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Spatie\Tags\Tag;
-use Spatie\Tags\Test\TestClasses\TestAnotherModel;
-use Spatie\Tags\Test\TestClasses\TestModel;
 
 beforeEach(function () {
     $this->testModel = TestModel::create(['name' => 'default']);

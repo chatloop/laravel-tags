@@ -1,0 +1,38 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-xml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: forbid-new-submodules
+      - id: detect-private-key
+      - id: check-shebang-scripts-are-executable
+      - id: check-case-conflict
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.8.0
+    hooks:
+      - id: shellcheck
+        args: ["--severity=warning"]
+  - repo: https://github.com/digitalpulp/pre-commit-php.git
+    rev: 1.4.0
+    hooks:
+      - id: php-lint-all
+  - repo: local
+    hooks:
+      - id: php-cs-fixer
+        name: php-cs-fixer
+        language: system
+        entry: vendor/bin/php-cs-fixer --config=.php-cs-fixer.dist.php fix
+        types: [ file ]
+        types_or: [ php ]
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.6.26
+    hooks:
+      - id: actionlint-docker

@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Tags;
+namespace Chatloop\Tags;
 
 use ArrayAccess;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,6 +15,9 @@ trait HasTags
 {
     protected array $queuedTags = [];
 
+    /**
+     * @return class-string<Tag>
+     */
     public static function getTagClassName(): string
     {
         return config('tags.tag_model', Tag::class);
@@ -77,8 +80,9 @@ trait HasTags
         Builder $query,
         string | array | ArrayAccess | Tag $tags,
         string $type = null,
+        string $subtype = null
     ): Builder {
-        $tags = static::convertToTags($tags, $type);
+        $tags = static::convertToTags($tags, $type, $subtype);
 
         collect($tags)->each(function ($tag) use ($query) {
             $query->whereHas('tags', function (Builder $query) use ($tag) {
@@ -209,16 +213,20 @@ trait HasTags
         return $this;
     }
 
-    protected static function convertToTags($values, $type = null)
+    protected static function convertToTags($values, $type = null, $subtype = null)
     {
         if ($values instanceof Tag) {
             $values = [$values];
         }
 
-        return collect($values)->map(function ($value) use ($type) {
+        return collect($values)->map(function ($value) use ($type, $subtype) {
             if ($value instanceof Tag) {
                 if (isset($type) && $value->type != $type) {
                     throw new InvalidArgumentException("Type was set to {$type} but tag is of type {$value->type}");
+                }
+
+                if (isset($subtype) && $value->subtype != $subtype) {
+                    throw new InvalidArgumentException("Subtype was set to {$subtype} but tag has subtype of {$value->subtype}");
                 }
 
                 return $value;
@@ -226,7 +234,7 @@ trait HasTags
 
             $className = static::getTagClassName();
 
-            return $className::findFromString($value, $type);
+            return $className::findFromString($value, $type, $subtype);
         });
     }
 
@@ -243,7 +251,7 @@ trait HasTags
         })->flatten();
     }
 
-    protected function syncTagIds($ids, string | null $type = null, $detaching = true): void
+    protected function syncTagIds($ids, string | null $type = null, string | null $subtype = null, $detaching = true): void
     {
         $isUpdated = false;
 
@@ -261,6 +269,7 @@ trait HasTags
                 $tagModel->getTable() . '.' . $tagModel->getKeyName()
             )
             ->where($tagModel->getTable() . '.type', $type)
+            ->where($tagModel->getTable() . '.subtype', $subtype)
             ->pluck('tag_id')
             ->all();
 
@@ -288,10 +297,11 @@ trait HasTags
         }
     }
 
-    public function hasTag($tag, string $type = null): bool
+    public function hasTag($tag, string $type = null, string $subtype = null): bool
     {
         return $this->tags
             ->when($type !== null, fn ($query) => $query->where('type', $type))
+            ->when($subtype !== null, fn ($query) => $query->where('subtype', $subtype))
             ->contains(function ($modelTag) use ($tag) {
                 return $modelTag->name === $tag || $modelTag->id === $tag;
             });

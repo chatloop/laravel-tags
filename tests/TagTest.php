@@ -1,6 +1,6 @@
 <?php
 
-use Spatie\Tags\Tag;
+use Chatloop\Tags\Tag;
 
 beforeEach(function () {
     expect(Tag::all())->toHaveCount(0);
@@ -53,6 +53,13 @@ it('can create a tag with a type', function () {
     expect($tag->type)->toBe('myType');
 });
 
+it('can create a tag with a subtype', function () {
+    $tag = Tag::findOrCreate('string', 'myType', 'mySubtype');
+
+    expect($tag->type)->toBe('myType');
+    expect($tag->subtype)->toBe('mySubtype');
+});
+
 
 it('provides a scope to get all tags with a specific type', function () {
     Tag::findOrCreate('tagA', 'firstType');
@@ -62,6 +69,18 @@ it('provides a scope to get all tags with a specific type', function () {
 
     expect(Tag::withType('firstType')->pluck('name')->toArray())->toMatchArray(['tagA', 'tagB']);
     expect(Tag::withType('secondType')->pluck('name')->toArray())->toMatchArray(['tagC', 'tagD']);
+});
+
+it('provides a scope to get all tags with a specific type and subtype', function () {
+    Tag::findOrCreate('tagA', 'firstType', 'firstSubType');
+    Tag::findOrCreate('tagB', 'firstType', 'secondSubType');
+    Tag::findOrCreate('tagC', 'secondType', 'thirdSubType');
+    Tag::findOrCreate('tagD', 'secondType', 'fourthSubType');
+    Tag::findOrCreate('tagE', 'firstType', 'firstSubType');
+    Tag::findOrCreate('tagF', 'secondType', 'thirdSubType');
+
+    expect(Tag::withType('firstType', 'firstSubType')->pluck('name')->toArray())->toMatchArray(['tagA', 'tagE']);
+    expect(Tag::withType('secondType', 'thirdSubType')->pluck('name')->toArray())->toMatchArray(['tagC', 'tagF']);
 });
 
 
@@ -90,11 +109,31 @@ it('provides a method to get all tags with a specific type', function () {
     expect(Tag::getWithType('secondType')->pluck('name')->toArray())->toMatchArray(['tagC', 'tagD']);
 });
 
+it('provides a method to get all tags with a specific type and subtype', function () {
+    Tag::findOrCreate('tagA', 'firstType', 'firstSubType');
+    Tag::findOrCreate('tagB', 'firstType', 'secondSubType');
+    Tag::findOrCreate('tagC', 'secondType', 'thirdSubType');
+    Tag::findOrCreate('tagD', 'secondType', 'fourthSubType');
+    Tag::findOrCreate('tagE', 'firstType', 'firstSubType');
+    Tag::findOrCreate('tagF', 'secondType', 'thirdSubType');
+
+    expect(Tag::getWithType('firstType', 'firstSubType')->pluck('name')->toArray())->toMatchArray(['tagA', 'tagE']);
+    expect(Tag::getWithType('secondType', 'thirdSubType')->pluck('name')->toArray())->toMatchArray(['tagC', 'tagF']);
+});
+
 
 it('will not create a tag if the tag already exists', function () {
     Tag::findOrCreate('string');
 
     Tag::findOrCreate('string');
+
+    expect(Tag::all())->toHaveCount(1);
+});
+
+it('will not create a tag if the tag already exists with same type', function () {
+    Tag::findOrCreate('string', 'myType');
+
+    Tag::findOrCreate('string', 'myType');
 
     expect(Tag::all())->toHaveCount(1);
 });
@@ -106,6 +145,16 @@ it('will create a tag if a tag exists with the same name but a different type', 
     Tag::findOrCreate('string', 'myType');
 
     expect(Tag::all())->toHaveCount(2);
+});
+
+it('will create a tag if a tag exists with the same name and type but a different subtype', function () {
+    Tag::findOrCreate('string', 'myType');
+
+    Tag::findOrCreate('string', 'myType', 'mySubtype');
+
+    Tag::findOrCreate('string', 'myType', 'anotherSubType');
+
+    expect(Tag::all())->toHaveCount(3);
 });
 
 
@@ -139,9 +188,11 @@ it('can find tags from a string with any type', function () {
 
     Tag::findOrCreate('tag1', 'myType2');
 
+    Tag::findOrCreate('tag1', 'myType1', 'subType');
+
     $tags = Tag::findFromStringOfAnyType('tag1');
 
-    expect($tags)->toHaveCount(3);
+    expect($tags)->toHaveCount(4);
 });
 
 
