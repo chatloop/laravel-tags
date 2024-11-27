@@ -37,7 +37,6 @@
             "Chatloop\\Tags\\": "src"
         }
     },
-
     "autoload-dev": {
         "psr-4": {
             "Chatloop\\Tags\\Test\\": "tests"

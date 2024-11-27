@@ -2,6 +2,22 @@
 
 All notable changes to `laravel-tags` will be documented in this file
 
+## [6.0.0](https://github.com/chatloop/laravel-tags/compare/5.0.0...6.0.0) (2024-11-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* switch to chatloop namespace and cleanup repo ([#1](https://github.com/chatloop/laravel-tags/issues/1))
+
+### Code Refactoring
+
+* switch to chatloop namespace and cleanup repo ([#1](https://github.com/chatloop/laravel-tags/issues/1)) ([3119dea](https://github.com/chatloop/laravel-tags/commit/3119dea16b181cc33a86ec22f38a47386ffeeacf))
+
+
+### Continuous Integration
+
+* added release-please app config ([6250ec7](https://github.com/chatloop/laravel-tags/commit/6250ec77c091ae0323f5f4d77d8b2f06e9b079cc))
+
 ## 5.0.0 - 2024-11-12
 
 ### What's Changed
