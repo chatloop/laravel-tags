@@ -130,6 +130,14 @@ it('will not create a tag if the tag already exists', function () {
     expect(Tag::all())->toHaveCount(1);
 });
 
+it('will not create a tag if the tag already exists with same slug', function () {
+    Tag::findOrCreate('another string');
+
+    Tag::findOrCreate('Another-string');
+
+    expect(Tag::all())->toHaveCount(1);
+});
+
 it('will not create a tag if the tag already exists with same type', function () {
     Tag::findOrCreate('string', 'myType');
 

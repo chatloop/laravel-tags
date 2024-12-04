@@ -62,7 +62,9 @@ class Tag extends Model implements Sortable
             ->where('type', $type)
             ->where('subtype', $subtype)
             ->where(function ($query) use ($name) {
-                $query->where('name', $name)->orWhere('slug', $name);
+                $query->where('name', $name)
+                    ->orWhere('slug', $name)
+                    ->orWhere('slug', static::slugify($name));
             })
             ->first();
     }
@@ -72,6 +74,7 @@ class Tag extends Model implements Sortable
         return static::query()
             ->where('name', $name)
             ->orWhere('slug', $name)
+            ->orWhere('slug', static::slugify($name))
             ->get();
     }
 
