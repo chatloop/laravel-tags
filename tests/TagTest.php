@@ -84,16 +84,16 @@ it('provides a scope to get all tags with a specific type and subtype', function
 });
 
 
-it('provides a scope to get all tags the contain a certain string', function () {
-    Tag::findOrCreate('one');
-    Tag::findOrCreate('another-one');
-    Tag::findOrCreate('another-ONE-with-different-casing');
+it('provides a scope to get all tags that contain a certain string', function () {
+    Tag::findOrCreate('o*ne');
+    Tag::findOrCreate('another one');
+    Tag::findOrCreate('another ONE with-different-casing');
     Tag::findOrCreate('two');
 
     expect(Tag::containing('on')->pluck('name')->toArray())->toMatchArray([
-        'one',
-        'another-one',
-        'another-ONE-with-different-casing',
+        'o*ne',
+        'another one',
+        'another ONE with-different-casing',
     ]);
     expect(Tag::containing('tw')->pluck('name')->toArray())->toMatchArray(['two']);
 });
@@ -126,6 +126,14 @@ it('will not create a tag if the tag already exists', function () {
     Tag::findOrCreate('string');
 
     Tag::findOrCreate('string');
+
+    expect(Tag::all())->toHaveCount(1);
+});
+
+it('will not create a tag if the tag already exists with same slug', function () {
+    Tag::findOrCreate('another string');
+
+    Tag::findOrCreate('Another-string');
 
     expect(Tag::all())->toHaveCount(1);
 });
