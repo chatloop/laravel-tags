@@ -2,6 +2,13 @@
 
 All notable changes to `laravel-tags` will be documented in this file
 
+## [6.1.0](https://github.com/chatloop/laravel-tags/compare/6.0.0...6.1.0) (2024-12-04)
+
+
+### Features
+
+* slug input when searching for existing tags to prevent duplicate slugs ([#3](https://github.com/chatloop/laravel-tags/issues/3)) ([7aa12c9](https://github.com/chatloop/laravel-tags/commit/7aa12c971f11c6432e22a9de97a9dc0dcbd2b571))
+
 ## [6.0.0](https://github.com/chatloop/laravel-tags/compare/5.0.0...6.0.0) (2024-11-27)
 
 
