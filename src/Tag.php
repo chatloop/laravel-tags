@@ -32,7 +32,9 @@ class Tag extends Model implements Sortable
 
     public function scopeContaining(Builder $query, string $name): Builder
     {
-        return $query->whereRaw("lower(name) LIKE ?", ['%' . mb_strtolower($name) . '%']);
+        return $query->where('name', 'like', '%' . $name . '%')
+            ->orWhere('slug', 'like', '%' . $name . '%')
+            ->orWhere('slug', 'like', '%' . static::slugify($name) . '%');
     }
 
     public static function findOrCreate(
