@@ -80,7 +80,7 @@ trait HasTags
         Builder $query,
         string | array | ArrayAccess | Tag $tags,
         string $type = null,
-        string $subtype = null
+        string $subtype = null,
     ): Builder {
         $tags = static::convertToTags($tags, $type, $subtype);
 
@@ -97,8 +97,9 @@ trait HasTags
         Builder $query,
         string | array | ArrayAccess | Tag $tags,
         string $type = null,
+        string $subtype = null,
     ): Builder {
-        $tags = static::convertToTags($tags, $type);
+        $tags = static::convertToTags($tags, $type, $subtype);
 
         return $query
             ->whereHas('tags', function (Builder $query) use ($tags) {
@@ -111,9 +112,10 @@ trait HasTags
     public function scopeWithoutTags(
         Builder $query,
         string | array | ArrayAccess | Tag $tags,
-        string $type = null
+        string $type = null,
+        string $subtype = null,
     ): Builder {
-        $tags = static::convertToTags($tags, $type);
+        $tags = static::convertToTags($tags, $type, $subtype);
 
         return $query
             ->whereDoesntHave('tags', function (Builder $query) use ($tags) {
