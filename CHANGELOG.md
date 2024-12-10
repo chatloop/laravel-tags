@@ -2,6 +2,13 @@
 
 All notable changes to `laravel-tags` will be documented in this file
 
+## [6.2.0](https://github.com/chatloop/laravel-tags/compare/6.1.0...6.2.0) (2024-12-10)
+
+
+### Features
+
+* ensure subtype is supported for the remaining tag scopes ([#5](https://github.com/chatloop/laravel-tags/issues/5)) ([c279c44](https://github.com/chatloop/laravel-tags/commit/c279c44e1e627f41c62dbedaf67fc9d44f2fe33e))
+
 ## [6.1.0](https://github.com/chatloop/laravel-tags/compare/6.0.0...6.1.0) (2024-12-04)
 
 
