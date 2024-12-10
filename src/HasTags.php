@@ -159,6 +159,9 @@ trait HasTags
 
     public function attachTags(array | ArrayAccess | Tag $tags, string $type = null): static
     {
+        if ($tags instanceof Tag) {
+            $tags = [$tags];
+        }
         $className = static::getTagClassName();
 
         $tags = collect($className::findOrCreate($tags, $type));
